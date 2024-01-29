@@ -16,7 +16,6 @@ private:
 public:
     void insert(int val);
     void print();
-    void del(int idx);
 };
 void singleLinkedList::insert(int val)
 {
