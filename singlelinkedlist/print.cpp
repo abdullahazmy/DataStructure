@@ -2,24 +2,48 @@
 using namespace std;
 struct Node
 {
-    int data{};
+    int data;
     Node *next;
     Node(int data) : data(data) {}
 };
-void print(Node *head)
+class singleLinkedList
 {
-    for (; head; head = head->next)
-        cout << head->data << " ";
+private:
+    Node *head{};
+    Node *tail{};
+    int length{};
 
-    cout << endl;
+public:
+    void insert(int val);
+    void print();
+    void del(int idx);
+};
+void singleLinkedList::insert(int val)
+{
+    Node *item = new Node(val);
+    if (!head)
+        head = tail = item;
+    else
+    {
+        tail->next = item;
+        tail = item;
+        tail->next = nullptr;
+    }
+}
+
+void singleLinkedList::print()
+{
+    for (Node *cur = head; cur; cur = cur->next)
+    {
+        cout << cur->data << " ";
+    }
+    cout << "\n";
 }
 int main()
 {
-    Node *node1 = new Node(10);
-    Node *node2 = new Node(20);
-    Node *node3 = new Node(30);
-    node1->next = node2;
-    node2->next = node3;
-    node3->next = NULL;
-    print(node1);
+    singleLinkedList list1;
+    list1.insert(5);
+    list1.insert(10);
+    list1.insert(30);
+    list1.print();
 }
