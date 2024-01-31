@@ -28,7 +28,7 @@ public:
         while (cur)
         {
             nxt = cur->next;
-            delete_node(cur);
+            delete(cur);
             cur = nxt;
         }
         head = nullptr;
