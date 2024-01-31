@@ -21,6 +21,18 @@ public:
     void print();
     Node *get_nth(int idx);
     void delete_nth(int idx);
+    ~singleLinkedList()
+    {
+        Node *cur = head;
+        Node *nxt;
+        while (cur)
+        {
+            nxt = cur->next;
+            delete_node(cur);
+            cur = nxt;
+        }
+        head = nullptr;
+    }
 };
 
 void singleLinkedList::check()
@@ -96,6 +108,7 @@ void singleLinkedList::delete_nth(int idx)
     }
     prv->next = cur->next;
     delete_node(cur);
+    check();
 }
 
 int main()
