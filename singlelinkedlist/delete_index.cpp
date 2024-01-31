@@ -6,53 +6,55 @@ struct Node
     Node *next;
     Node(int data) : data(data) {}
 };
+
 class singleLinkedList
 {
 private:
     Node *head{};
     Node *tail{};
     int length{};
+    void check();
+    void delete_node(Node *node);
 
 public:
     void insert(int val);
     void print();
     Node *get_nth(int idx);
-    // void delete_first();
-    // void delete_last();
     void delete_nth(int idx);
-    void check()
-    {
-        if (length == 0)
-        {
-            head = tail = nullptr;
-        }
-        else if (length == 1)
-        {
-            head = tail;
-            head->next = tail->next = nullptr;
-        }
-    }
-    void delete_node(Node *node)
-    {
-        delete node;
-        length--;
-        check();
-    }
 };
+
+void singleLinkedList::check()
+{
+    if (length == 0)
+        head = tail = nullptr;
+    else if (length == 1)
+    {
+        head = tail;
+        head->next = tail->next = nullptr;
+    }
+
+    else if (length == 2)
+    {
+        head->next->next = tail->next;
+    }
+}
+
 void singleLinkedList::insert(int val)
 {
     Node *item = new Node(val);
     if (!head)
     {
         head = tail = item;
+        length++;
+        check();
     }
     else
     {
         tail->next = item;
         tail = item;
-        tail->next = nullptr;
+        length++;
+        check();
     }
-    length++;
 }
 
 void singleLinkedList::print()
@@ -69,33 +71,39 @@ Node *singleLinkedList::get_nth(int idx)
     int ctr = 0;
     for (Node *cur = head; cur; cur = cur->next)
     {
-        if (ctr == idx)
+        if (idx == ctr)
             return cur;
         ctr++;
     }
-
     return nullptr;
+}
+
+void singleLinkedList::delete_node(Node *node)
+{
+    delete node;
+    length--;
+    check();
 }
 
 void singleLinkedList::delete_nth(int idx)
 {
-    Node *prev = get_nth(idx - 1);
-    Node *cur = prev->next;
+    Node *prv = get_nth(idx - 1);
+    Node *cur = prv->next;
     bool is_tail = (cur == tail);
     if (is_tail)
     {
-        tail = prev;
+        tail = prv;
     }
-    prev->next = cur->next;
+    prv->next = cur->next;
     delete_node(cur);
 }
 
 int main()
 {
     singleLinkedList list1;
-    list1.insert(5);
-    list1.insert(10);
-    list1.insert(30);
+    list1.insert(50);
+    list1.insert(70);
+    list1.insert(90);
     list1.delete_nth(1);
     list1.print();
 }
