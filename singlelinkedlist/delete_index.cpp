@@ -99,6 +99,12 @@ void singleLinkedList::delete_node(Node *node)
 
 void singleLinkedList::delete_nth(int idx)
 {
+    if (length <= 1)
+    {
+        delete_node(get_nth(idx));
+        check();
+        return;
+    }
     Node *prv = get_nth(idx - 1);
     Node *cur = prv->next;
     bool is_tail = (cur == tail);
