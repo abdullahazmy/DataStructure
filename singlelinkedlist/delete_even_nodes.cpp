@@ -2,93 +2,102 @@
 using namespace std;
 struct Node
 {
-    int data;
-    Node *next;
+    int data{};
+    Node *next{};
     Node(int data) : data(data) {}
 };
 
-class singleLinkedList
+/*
+@ Node *get_backnth(int idx);     done
+@ void delete_node(Node *node);   done
+@ void delete_front();             done
+@ void delete_end();               done
+@ void delete_nxt(Node *node);
+@ bool is_same(const singleLinkedList &other);
+@ void delete_node_with_key(int key);
+@@ Destructor to delete all created nodes
+@@ void swap_pairs();
+-------------------------------------------
+
+# void reverse();    // reverse list nodes by adereseases
+# void delete_evenidx();   // Note positions not values
+# void insert_sorted(int val);
+
+*/
+
+class linkedlist
 {
 private:
     Node *head{};
     Node *tail{};
     int length{};
-    void check();
+    void check()
+    {
+        if (!head)
+            head = tail = nullptr;
+        if (length == 1)
+        {
+            head = tail;
+            head->next = tail->next = nullptr;
+        }
+        tail->next = nullptr;
+    }
+
     void delete_node(Node *node);
-    void delete_nxt(Node *node);
 
 public:
-    void insert(int val);
-    void print();
-    Node *get_nth(int idx);
-    void delete_nth(int idx);
+    void insert_end(int val);
     void insert_front(int val);
+    Node *get_backnth(int idx);
     void delete_front();
-    Node *get_backnth(int idx); // reversed
-    bool is_same(const singleLinkedList &other);
-    bool is_same2(const singleLinkedList &other);
+    void delete_tail();
     void delete_node_with_key(int key);
+    bool is_same(const linkedlist &other);
     void swap_pairs();
-    void reverse_list();
-    void delete_even_positions();
-    ~singleLinkedList()
+    void reverse();
+    void delete_and_link(Node *node);
+    void delete_evenpos();
+    void print();
+    ~linkedlist()
     {
         Node *cur = head;
-        Node *nxt;
         while (cur)
         {
-            nxt = cur->next;
-            delete (cur);
-            cur = nxt;
+            cur = cur->next;
+            delete_front();
         }
-        head = nullptr;
     }
 };
 
-void singleLinkedList::check()
-{
-    if (length == 0)
-        head = tail = nullptr;
-    else if (length == 1)
-    {
-        head = tail;
-        head->next = tail->next = nullptr;
-    }
-
-    else if (length == 2)
-    {
-        head->next->next = tail->next;
-    }
-}
-
-void singleLinkedList::insert(int val)
+void linkedlist::insert_end(int val)
 {
     Node *item = new Node(val);
     if (!head)
-    {
         head = tail = item;
-        length++;
-        check();
-    }
     else
     {
         tail->next = item;
         tail = item;
-        length++;
-        check();
+        tail->next = nullptr;
     }
+    length++;
 }
 
-void singleLinkedList::print()
+void linkedlist::insert_front(int val)
 {
-    for (Node *cur = head; cur; cur = cur->next)
+    Node *item = new Node(val);
+    if (!head)
+        head = tail = item;
+    else
     {
-        cout << cur->data << " ";
+        Node *tmp = head;
+        head = item;
+        head->next = tmp;
     }
-    cout << "\n";
+    length++;
 }
 
-Node *singleLinkedList::get_nth(int idx)
+Node *linkedlist::get_backnth(int idx)
 {
     int ctr = 0;
     for (Node *cur = head; cur; cur = cur->next)
@@ -100,142 +109,114 @@ Node *singleLinkedList::get_nth(int idx)
     return nullptr;
 }
 
-void singleLinkedList::delete_node(Node *node)
+void linkedlist::delete_node(Node *node)
 {
-    delete node;
+    delete (node);
     length--;
-    check();
 }
 
-void singleLinkedList::delete_nth(int idx)
-{
-    if (length <= 1)
-    {
-        delete_node(get_nth(idx));
-        check();
-        return;
-    }
-    Node *prv = get_nth(idx - 1);
-    Node *cur = prv->next;
-    bool is_tail = (cur == tail);
-    if (is_tail)
-    {
-        tail = prv;
-    }
-    prv->next = cur->next;
-    delete_node(cur);
-    check();
-}
-
-void singleLinkedList::insert_front(int val)
-{
-    Node *item = new Node(val);
-    item->next = head;
-    head = item;
-    length++;
-    check();
-}
-
-void singleLinkedList::delete_front()
+void linkedlist::delete_front()
 {
     if (!head)
-        head = nullptr;
+        return;
+    if (length == 1)
+    {
+        delete_node(head);
+        head = tail = nullptr;
+        return;
+    }
+
+    Node *tmp = head;
+    head = head->next;
+    delete_node(tmp);
+}
+
+void linkedlist::delete_tail()
+{
+    if (!head)
+        return;
+    if (length == 1)
+    {
+        delete_node(tail);
+        head = tail = nullptr;
+    }
+
     else
     {
-        Node *cur = head;
-        head = cur->next;
-        delete_node(cur);
+        Node *tmp = tail;
+        for (Node *cur = head; cur; cur = cur->next)
+        {
+            if (cur->next == tail)
+            {
+                tail = cur;
+                break;
+            }
+        }
+        delete_node(tmp);
+        check();
     }
 }
 
-Node *singleLinkedList::get_backnth(int idx)
+void linkedlist::delete_node_with_key(int key)
 {
-    if (length < idx)
-        return nullptr;
-    return get_nth(length - idx);
+    if (!head)
+        return;
+    if (head->data == key)
+    {
+        delete_front();
+    }
+
+    else if (tail->data == key)
+    {
+        delete_tail();
+    }
+
+    else
+        for (Node *cur = head, *prv = nullptr; cur; prv = cur, cur = cur->next)
+        {
+            Node *tmp = cur;
+            if (cur->data == key)
+            {
+                prv->next = cur->next;
+                delete_node(tmp);
+                return;
+            }
+        }
 }
 
-bool singleLinkedList::is_same(const singleLinkedList &other)
+bool linkedlist::is_same(const linkedlist &other)
 {
+    Node *cur = head;
+    Node *tmp = other.head;
     if (length != other.length)
         return false;
-    Node *second = other.head;
-    for (Node *cur = head; cur; cur = cur->next)
+    while (cur)
     {
-        if (cur->data != second->data)
+        if (cur->data != tmp->data)
             return false;
-        second = second->next;
+        cur = cur->next, tmp = tmp->next;
     }
     return true;
 }
 
-// Not using length variable
-bool singleLinkedList::is_same2(const singleLinkedList &other)
+void linkedlist::swap_pairs()
 {
-    Node *cur = head, *other_h = other.head;
-    while (cur && other_h)
-    {
-        if (cur->data != other_h->data)
-            return false;
-        cur = cur->next, other_h = other_h->next;
-    }
-
-    return (!cur && !other_h);
-}
-
-void singleLinkedList::delete_node_with_key(int key)
-{
-    Node *cur = head;
-    Node *prv = nullptr;
-
-    while (cur != nullptr)
-    {
-        if (cur->data == key)
-        {
-            if (prv == nullptr)
-            {
-                // Key found at head of the list
-                delete_front();
-                return;
-            }
-            else
-            {
-                delete_nxt(prv);
-                return;
-            }
-        }
-        prv = cur;
-        cur = cur->next;
-    }
-}
-
-void singleLinkedList::delete_nxt(Node *prv) // working on prv
-{
-    if (!head)
+    // Check if the list is empty or has only one node
+    if (!head || !head->next)
         return;
-    Node *to_delete = prv->next; // Current Node
-    bool is_tail = to_delete == tail;
-    if (is_tail)
-        tail = prv;
-    prv->next = prv->next->next;
-    delete_node(to_delete);
-    check();
-}
 
-void singleLinkedList::swap_pairs()
-{
-    for (Node *cur = head; cur; cur = cur->next)
+    // Traverse the list by pairs
+    for (Node *cur = head; cur && cur->next; cur = cur->next->next)
     {
-        if (cur->next)
-        {
-            swap(cur->data, cur->next->data);
-            cur = cur->next;
-        }
+        // Swap data of current and next nodes
+        int temp = cur->data;
+        cur->data = cur->next->data;
+        cur->next->data = temp;
     }
 }
 
-void singleLinkedList::reverse_list()
-{ // O(n) time - O(1) memory
+void linkedlist::reverse()
+{
     if (length <= 1)
         return;
     tail = head;
@@ -243,46 +224,79 @@ void singleLinkedList::reverse_list()
     head = head->next;
     while (head)
     {
-        Node *Next = head->next;
+        Node *nxt = head->next;
         head->next = prv;
+
         prv = head;
-        head = Next;
+        head = nxt;
     }
     head = prv;
     tail->next = nullptr;
-    check();
 }
 
-void singleLinkedList::delete_even_positions()
+void linkedlist::delete_and_link(Node *node)
 {
-    int ctr = 1;
-    Node *prv = nullptr; // No need to initialize cur here, as it's initialized in the loop
+    if (node == head)
+        delete_front();
+    else if (node == tail)
+        delete_tail();
+    else
+    {
+        for (Node *cur = head, *prv = nullptr; cur; prv = cur, cur = cur->next)
+        {
+            if (cur == node)
+            {
+                prv->next = cur->next;
+                delete_node(node);
+            }
+        }
+    }
+}
 
-    for (Node *cur = head; cur; cur = cur->next)
+void linkedlist::delete_evenpos()
+{
+    if (length <= 1)
+        return;
+    int ctr = 1;
+    for (Node *cur = head, *prv = head; cur; prv = cur, cur = cur->next)
     {
         if (ctr % 2 == 0)
         {
-            prv->next = cur->next;
-            delete cur;
-            cur = prv; // Update cur to prv so that it gets properly updated in the next iteration
+
+            if (cur == tail)
+            {
+                delete_tail();
+                return;
+            }
+            else
+            {
+                prv->next = cur->next;
+                delete_node(cur);
+            }
+            cur = prv;
         }
-        else
-        {
-            prv = cur; // Update prv to cur only when the current node is not deleted
-        }
+
         ctr++;
     }
 }
 
+/// @brief /////////////////////////
+void linkedlist::print()
+{
+    for (Node *cur = head; cur; cur = cur->next)
+    {
+        cout << cur->data << " ";
+    }
+    cout << "\n";
+}
+
 int main()
 {
-    singleLinkedList list1;
-    list1.insert(50);
-    list1.insert(70);
-    list1.insert(90);
-    list1.insert(60);
-    // list1.insert(20);
-    list1.delete_even_positions();
-
-    list1.print();
+    linkedlist ll;
+    ll.insert_end(1);
+    ll.insert_end(2);
+    ll.insert_end(3);
+    ll.insert_end(4);
+    ll.delete_evenpos();
+    ll.print();
 }
