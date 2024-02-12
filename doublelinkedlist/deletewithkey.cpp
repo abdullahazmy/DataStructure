@@ -160,11 +160,6 @@ void doubleLinkedList::delete_node_with_key(int key)
     }
 
     // If the key is found at the tail, delete the tail node
-    if (tail->data == key)
-    {
-        delete_end();
-        return;
-    }
 
     // Traverse the list to find the node with the given key
     for (Node *cur = head; cur; cur = cur->next)
@@ -175,6 +170,11 @@ void doubleLinkedList::delete_node_with_key(int key)
             cur->prv->next = cur->next;
             cur->next->prv = cur->prv;
 
+            if (cur->data == tail->data == key)
+            {
+                delete_end();
+                return;
+            }
             // Delete the current node
             delete_node(cur);
             return;
@@ -194,7 +194,9 @@ int main()
     ll.insert_end(5);
     ll.insert_end(20);
     ll.insert_end(40);
-    ll.delete_node_with_key(20); // I Need to complete implementing this method first
+    ll.insert_end(40);
+    ll.insert_end(20);
+    ll.delete_node_with_key(20);
     ll.print();
-    cout << "\n\n\nENNNNND";
+    cout << "ENNNNND";
 }
