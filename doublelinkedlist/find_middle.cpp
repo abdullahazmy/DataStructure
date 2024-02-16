@@ -312,6 +312,8 @@ bool doubleLinkedList::is_palindrome()
 
 int doubleLinkedList::find_middle()
 {
+    if (length == 1)
+        return head->data;
     assert(head);
     int size = length / 2 + 1;
     Node *cur = head;
@@ -340,7 +342,7 @@ void test()
 {
     doubleLinkedList list;
     list.insert_end(1);
-    list.insert_end(2);
+    // list.insert_end(2);
     cout << list.find_middle();
 }
 //////////////////////////////////////////
