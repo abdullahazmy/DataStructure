@@ -163,6 +163,7 @@ void doubleLinkedList::insert_sorted(int val)
 
         // Now, cur points to the node before the insertion point
         item->next = cur->next;
+        item->prv = cur;
         cur->next = item;
         length++;
     }
