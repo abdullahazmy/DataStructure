@@ -1,154 +1,106 @@
 #include <iostream>
-#include <cassert>
 using namespace std;
 
-class Queue
+struct Node
 {
-    int size{};
-    int front{0};
-    int rear{0};
-    int added_elements{};
-    int *array{};
-
-public:
-    Queue(int size) : size(size)
-    {
-        array = new int[size];
-    }
-
-    ~Queue()
-    {
-        delete[] array;
-    }
-
-    int next(int pos)
-    {
-        ++pos;
-        if (pos == size)
-            pos = 0;
-        return pos;
-        // return (pos + 1) % size;	//  Or shorter way
-    }
-
-    void enqueue(int value)
-    {
-        assert(!isFull());
-        array[rear] = value;
-        rear = next(rear);
-        added_elements++;
-    }
-
-    int dequeue()
-    {
-        assert(!isEmpty());
-        int value = array[front];
-        front = next(front);
-        --added_elements;
-        return value;
-    }
-
-    int front_val()
-    {
-        assert(!isEmpty());
-        return array[front];
-    }
-
-    void display()
-    {
-        cout << "Front " << front << " - rear " << rear << "\t";
-        if (isFull())
-            cout << "full";
-        else if (isEmpty())
-        {
-            cout << "empty\n\n";
-            return;
-        }
-        cout << "\n";
-
-        for (int cur = front, step = 0; step < added_elements; ++step, cur = next(cur))
-            cout << array[cur] << " ";
-        cout << "\n\n";
-    }
-
-    int isEmpty()
-    {
-        return added_elements == 0;
-    }
-
-    bool isFull()
-    {
-        return added_elements == size;
-    }
+    int data{};
+    Node *next{};
+    Node(int data) : data(data) {}
 };
 
-// 1
-// 2 1
-// 3 2 1
-// 4 3 2 1
+class queue
+{
+private:
+    int length{};
+    Node *head{};
+    Node *tail{};
+
+public:
+    void push(int val)
+    {
+        length++;
+        Node *item = new Node(val);
+        if (!head)
+        {
+            head = tail = item;
+        }
+
+        else
+        {
+            tail->next = item;
+            tail = item;
+        }
+    }
+
+    void insert_front(int val)
+    {
+        if (is_empty())
+            push(val);
+        else
+        {
+            Node *item = new Node(val);
+            item->next = head;
+            head = item;
+        }
+    }
+
+    bool is_empty() { return !head; }
+
+    int pop()
+    {
+        if (is_empty())
+            return -1;
+        length--;
+        Node *tmp = head;
+        int ans = tmp->data;
+        head = head->next;
+        delete (tmp);
+        return ans;
+    }
+
+    void print()
+    {
+        for (Node *cur = head; cur; cur = cur->next)
+        {
+            cout << cur->data << " ";
+        }
+        cout << "\n";
+    }
+
+    int peak() { return tail->data; }
+};
 
 class Stack
 {
 private:
-    Queue q;
+    queue q;
     int added_elements{};
 
-    void insert_at_front(int x)
-    {
-        // we get current elements size, and circulate around new x
-        int sz = added_elements;
-        q.enqueue(x);
-        while (sz--)
-            q.enqueue(q.dequeue());
-        // now all old elements are after x in the queue
-        ++added_elements;
-    }
-
 public:
-    Stack(int size) : q(size)
+    void push(int val)
     {
+        q.insert_front(val);
+        added_elements++;
     }
 
-    void push(int x)
-    { // O(n)
-        // Idea: keep the queue all the time ready for stack pop
-        // With every new element, we insert it at the front
-        insert_at_front(x);
-    }
+    bool is_empty() { return added_elements == 0; }
 
     int pop()
     {
-        --added_elements;
-        return q.dequeue();
-    }
-
-    int peek()
-    {
-        return q.front_val();
-    }
-
-    int isFull()
-    {
-        return q.isFull();
-    }
-
-    int isEmpty()
-    {
-        return q.isEmpty();
+        added_elements--;
+        return q.pop();
     }
 };
 
 int main()
 {
-    Stack stk(3);
-    stk.push(10);
-    stk.push(20);
-    stk.push(30);
+    Stack q;
+    q.push(3);
+    q.push(2);
+    q.push(1);
 
-    while (!stk.isEmpty())
+    while (!q.is_empty())
     {
-        cout << stk.peek() << " ";
-        stk.pop();
-    } // 30 20 10
-
-    return 0;
+        cout << q.pop() << " ";
+    }
 }
