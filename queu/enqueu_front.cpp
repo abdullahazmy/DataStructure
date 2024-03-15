@@ -1,100 +1,164 @@
 #include <iostream>
+#include <cassert>
 using namespace std;
 
 /*
-    ! A method is added which is called prv => helps us to get the prv index of rear
-       and if the rear is at the end of the array, then it's prv should be index 0
-*/
+ * Simple extension
+ * 1- Add prev(index) function
+ * 2- To remove from rear, first move to previous then get it
+ * 3- To enqueue at the front, first move to previous then use it
+ */
 
-class queue
-{
-private:
+class Deque
+{ // Double ended queue
     int size{};
-    int front{};
-    int rear{};
-    int added_elements = 0;
-    int *arr{};
+    int front{0};
+    int rear{0};
+    int added_elements{};
+    int *array{};
 
 public:
-    queue(int size) : size(size)
+    Deque(int size) : size(size)
     {
-        arr = new int[size];
+        array = new int[size];
     }
 
-    int next(int val)
+    ~Deque()
     {
-        return (val + 1) % size;
+        delete[] array;
     }
 
-    int prv(int val)
+    int next(int pos)
     {
-        return (val - 1) % size;
+        // return (pos + 1) % size;	//  shorter way
+        ++pos;
+        if (pos == size)
+            pos = 0;
+        return pos;
     }
 
-    bool is_empty() { return added_elements == 0; }
-    bool is_full() { return added_elements == size; }
-
-    void enqueu(int val)
+    int prev(int pos)
     {
-        if (is_full())
-            return;
-        arr[rear] = val;
+        // return (pos - 1 + size) % size;	//  shorter way
+        --pos;
+        if (pos == -1) // go back from begin
+            pos = size - 1;
+        return pos;
+    }
+
+    void enqueue_rear(int value)
+    { // old one
+        assert(!isFull());
+        array[rear] = value;
         rear = next(rear);
         added_elements++;
     }
 
-    void enqueu_front(int val)
-    {
-        if (is_full())
-            return;
-        front = rear;
-        enqueu(val);
+    int dequeue_front()
+    { // old one
+        assert(!isEmpty());
+        int value = array[front];
+        front = next(front);
+        --added_elements;
+        return value;
     }
 
-    int dequeu()
+    void enqueue_front(int value)
     {
-        if (is_empty())
-            return -1;
-        int val = arr[front];
-        front++;
-        added_elements--;
-        return val;
+        assert(!isFull());
+        front = prev(front); // first prev
+        array[front] = value;
+        added_elements++;
     }
 
-    int dequeu_rear()
+    int dequeue_rear()
     {
-        if (is_empty())
-            return -1;
-        added_elements--;
-        int val{};
-        if (rear == 0)
-            val = arr[0];
-        else
-        {
-            val = arr[rear - 1];
-        }
-        rear = prv(rear);
-        return val;
+        assert(!isEmpty());
+        rear = prev(rear);
+        int value = array[rear];
+        --added_elements;
+        return value;
     }
 
     void display()
     {
-        for (int cur = front, step = 0; step < added_elements; step++, cur = next(cur))
+        cout << "Front " << front << " - rear " << rear << "\t";
+        if (isFull())
+            cout << "full";
+        else if (isEmpty())
         {
-            cout << arr[cur] << " ";
+            cout << "empty\n\n";
+            return;
         }
         cout << "\n";
+
+        for (int cur = front, step = 0; step < added_elements; ++step, cur = next(cur))
+            cout << array[cur] << " ";
+        cout << "\n\n";
+    }
+
+    int isEmpty()
+    {
+        return added_elements == 0;
+    }
+
+    bool isFull()
+    {
+        return added_elements == size;
     }
 };
 
 int main()
 {
-    queue q(4);
-    q.enqueu(1);
-    q.enqueu(2);
-    q.enqueu(3);
-    q.enqueu_front(-9);
-    q.dequeu_rear();
 
-    q.display();
+    Deque dq(6);
+
+    dq.enqueue_front(3);
+    dq.display();
+    dq.enqueue_front(2);
+    dq.enqueue_rear(4);
+    dq.enqueue_front(1);
+    dq.enqueue_front(5);
+    dq.enqueue_front(6);
+    dq.display();                       // 1 2 3 4
+    cout << dq.dequeue_rear() << "\n";  // 4
+    dq.display();                       // 1 2 3
+    cout << dq.dequeue_front() << "\n"; // 1
+    dq.display();                       // 2 3
+    cout << dq.dequeue_rear() << "\n";  // 3
+    cout << dq.dequeue_front() << "\n"; // 2
+
+    while (!dq.isEmpty())
+        dq.dequeue_rear();
+    dq.display(); //
+    for (int i = 0; i < 6; ++i)
+        dq.enqueue_rear(i + 10);
+    dq.display(); //
+
+    return 0;
 }
+
+/*
+Front 5 - rear 0
+3
+
+Front 1 - rear 1	full
+6 5 1 2 3 4
+
+4
+Front 1 - rear 0
+6 5 1 2 3
+
+6
+Front 2 - rear 0
+5 1 2 3
+
+3
+5
+Front 3 - rear 3	empty
+
+Front 3 - rear 3	full
+10 11 12 13 14 15
+
+
+ */
