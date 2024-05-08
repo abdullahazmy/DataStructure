@@ -85,5 +85,5 @@ int main()
     stk.push(3);
     stk.display(); // 3 2 1
     stk.insert_at_bottom(8);
-    stk.display(); // 3 2 1 7
+    stk.display(); // 3 2 1 8
 }
