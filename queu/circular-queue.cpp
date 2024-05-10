@@ -31,7 +31,9 @@ public:
         if (is_empty())
             return -1;
         added_elements--;
-        return arr[front++];
+        int ans = arr[front];
+        front = next(front);
+        return ans;
     }
 
     void print()
