@@ -1,5 +1,8 @@
-// Solution for a problem
-// Asking for the largest sum for a specific path in a BinaryTree
+/*
+Given the root of a binary tree and an integer targetSum,
+return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.
+https://leetcode.com/problems/path-sum/description/
+*/
 
 class Solution
 {
