@@ -1,0 +1,19 @@
+https://leetcode.com/problems/sum-of-left-leaves/description/
+
+bool is_leaf(TreeNode *node) { return node && !node->left && !node->right; }
+
+class Solution
+{
+public:
+    int sumOfLeftLeaves(TreeNode *root)
+    {
+        if (!root)
+            return 0;
+        int sum = 0;
+        if (is_leaf(root->left))
+            sum += root->left->val;
+        sum += sumOfLeftLeaves(root->left);
+        sum += sumOfLeftLeaves(root->right);
+        return sum;
+    }
+};
