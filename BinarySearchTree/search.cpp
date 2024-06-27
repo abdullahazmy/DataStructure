@@ -9,6 +9,5 @@ bool _search(TreeNode *root, int target)
     if (target > root->val)
         return _search(root->right, target);
 
-    if (target < root->val)
-        return _search(root->left, target);
+    return _search(root->left, target);
 }
