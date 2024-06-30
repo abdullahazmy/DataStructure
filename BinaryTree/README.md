@@ -25,6 +25,7 @@ In a Perfect Binary Tree, the number of leaf nodes is the number of internal nod
 
  L = I + 1 Where L = Number of leaf nodes, I = Number of internal nodes.
 
+--> A binary tree is balanced if the height of the tree is O(Log n) 
 
 
 ---
