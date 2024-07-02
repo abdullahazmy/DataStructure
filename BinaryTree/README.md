@@ -2,22 +2,20 @@
 
 ## Most Used Types Of Binary Trees
 
-**Full Binary Tree**
+> Full Binary Tree
 
 A Binary Tree is a full binary tree if every node has 0 or 2 children. The following are examples of a full binary tree. We can also say a full binary tree is a binary tree in which all nodes except leaf nodes have two children. 
 
-**Degenerate (or pathological) tree**
-
+> Degenerate (or pathological) tree
 
 Is the Binary Tree which is like the linkedlist
 
-**Complete Binary Tree**
 
+> Complete Binary Tree
 
 A Binary Tree is a Complete Binary Tree if all the levels are completely filled except possibly the last level and the last level has all keys as left as possible.
 
-**Perfect Binary Tree**
-
+> Perfect Binary Tree
 
 A Binary tree is a Perfect Binary Tree in which all the internal nodes have two children and all leaf nodes are at the same level. 
 
