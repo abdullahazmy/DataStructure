@@ -9,3 +9,4 @@ Inorder Traversal is always sorted for BST
 Successor in a BST is the first element after you in sorted order
 which means, the smallest node at your right subtrees.
 If the node has no right node, and you want to get it's successor, then return the root of the whole chain.
+The largest value in the tree has no successor
