@@ -10,3 +10,7 @@ Successor in a BST is the first element after you in sorted order (Inorder Trave
 which means, the smallest node at your right subtrees.
 If the node has no right node, and you want to get it's successor, then return the root of the whole chain.
 The largest value in the tree has no successor
+
+---
+
+Predecessor is the number before you in the sorted array, the vice versa of Successor.
