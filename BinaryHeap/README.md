@@ -21,3 +21,5 @@ while the normal priority_queue sorts in descending order
 
 -  The top element at normal priority_queue is the max element
 -  At the mentioned one, it's the smallest element
+-  kth_smallest => use max_heap
+-  kth_largest => use min_heap
