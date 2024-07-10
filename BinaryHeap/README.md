@@ -18,3 +18,6 @@ for (max heap tree) the max value is located at the root
 
 `priority_queue<int, vector<int>, greater<int>> q;` this is used to sort in ascending order
 while the normal priority_queue sorts in descending order
+
+-  The top element at normal priority_queue is the max element
+-  At the mentioned one, it's the smallest element
