@@ -12,3 +12,9 @@ for (max heap tree) the max value is located at the root
 
 5. We insert the root then left then right, then move to the next subtree behind you and do the same formula
   ![image](https://github.com/abdullahazmy/DataStructure/assets/125517573/ee732fbd-7d56-46ca-870d-bd6ea519c16d)
+
+
+---
+
+`priority_queue<int, vector<int>, greater<int>> q;` this is used to sort in ascending order
+while the normal priority_queue sorts in descending order
