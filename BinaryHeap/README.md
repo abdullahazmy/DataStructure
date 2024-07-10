@@ -11,4 +11,4 @@ for (max heap tree) the max value is located at the root
 4. To know the parent `(node_idx - 1) / 2`
 
 5. We insert the root then left then right, then move to the next subtree behind you and do the same formula
--  ![image](https://github.com/abdullahazmy/DataStructure/assets/125517573/ee732fbd-7d56-46ca-870d-bd6ea519c16d)
+  ![image](https://github.com/abdullahazmy/DataStructure/assets/125517573/ee732fbd-7d56-46ca-870d-bd6ea519c16d)
