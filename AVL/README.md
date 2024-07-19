@@ -5,11 +5,12 @@ An AVL tree defined as a self-balancing Binary Search Tree (BST) where the diffe
 ---
 
 > [!NOTE]
-> At right Rotation; the successor become the right node for you, and you become the parent.
+> During right rotation, the root becomes the left node.
 
 ---
 
 > [!NOTE]
-> For left rotation; the succesor becomes the left node for you, and you become the parent.
+> During left rotation, the root becomes the right node.
 
 We can combine `left-right rotation` or `right-left rotation` means the left rotation happens and then right rotation or vice versa.
+
