@@ -8,7 +8,7 @@
 ---
 
 one week to study DS ---- Day 1
-- [ ] Vector and left-right Rotations
+- [x] Vector and left-right Rotations
 - [ ] Stack-Queue-Dequeu And their problems
 
 ---
