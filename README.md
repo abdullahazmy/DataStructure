@@ -1,4 +1,5 @@
 # DataStructure
 
-You can check the README at each topic.
+
+You can check the README for each topic from directories.
 ---
